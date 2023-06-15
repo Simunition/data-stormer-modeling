@@ -17,7 +17,7 @@ def download_grib_data(start_year, end_year):
     grib_suffix = "0100_005000-000000geop_ht"
 
     # Local folders for train and test data
-    download_folder = "./download/"
+    download_folder = "../download/"
     train_folder = os.path.join(download_folder, "train/")
     test_folder = os.path.join(download_folder, "test/")
     twelve_train_folder = os.path.join(train_folder, "012")
