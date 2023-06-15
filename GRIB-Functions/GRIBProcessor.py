@@ -19,10 +19,13 @@ def csv_conversion(meteo_arr):
     # Reset index to convert multi-index to columns
     met_frame.reset_index(inplace=True)
 
-    # Convert to CSV
-    output_folder = './output'
+    # Create output folder and set output path
+    output_folder = './output/'
     output_filename = "csv_out.csv"
     output_path = os.path.join(output_folder, output_filename)
+    os.makedirs(output_folder, exist_ok=True)
+
+    # Convert to CSV
     met_frame.to_csv(output_path, index=False)
 
     return open(output_path)
