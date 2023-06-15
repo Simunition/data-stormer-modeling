@@ -4,7 +4,7 @@ import GRIBDownloader as gd
 
 def get_grib():
     # Check if the test/000 folder exists, if not download the GRIB data for the specified year range
-    test_folder = "../download/test/012"
+    test_folder = "./download/test/012"
     if not os.path.exists(test_folder):
         gd.download_grib_data(2013, 2013)
 
