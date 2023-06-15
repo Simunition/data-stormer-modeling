@@ -42,7 +42,7 @@ def plot_grib(xarray_data):
     plt.ylabel('Latitude')
 
     # Save and return plot
-    output_folder = './output'
+    output_folder = '../output'
     output_filename = "zero_hour_plot.png"
     output_path = os.path.join(output_folder, output_filename)
     plt.savefig(output_path)

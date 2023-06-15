@@ -20,8 +20,9 @@ def csv_conversion(meteo_arr):
     met_frame.reset_index(inplace=True)
 
     # Convert to CSV
-    os.makedirs('Output', exist_ok=True)
-    output_path = 'Output/csv_out.csv'
+    output_folder = '../output'
+    output_filename = "csv_out.csv"
+    output_path = os.path.join(output_folder, output_filename)
     met_frame.to_csv(output_path, index=False)
 
     return open(output_path)
