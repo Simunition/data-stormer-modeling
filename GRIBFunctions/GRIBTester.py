@@ -1,6 +1,6 @@
 import os
 import random
-import GRIBDownloader as gd
+from GRIBFunctions import GRIBDownloader as gd
 
 def get_grib():
     # Check if the test/000 folder exists, if not download the GRIB data for the specified year range
