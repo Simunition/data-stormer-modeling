@@ -22,7 +22,7 @@ def predict():
     data.save(app.config['UPLOAD_FOLDER'] + filename)
     #
     predictor = WeatherPredictor('../model_deployment/regr_model.joblib')
-    predictor.make_prediction(filename)
+    predictor.make_prediction(os.path.join("static/", filename))
     csv_out = predictor.output_csv() #outputs CSV with filename as input
     png_out = predictor.plot_geopotential_height() #plots the prediction
 
