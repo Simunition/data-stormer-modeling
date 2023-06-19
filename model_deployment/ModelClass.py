@@ -5,6 +5,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 from joblib import load
+import io
+from PIL import Image 
 
 class WeatherPredictor:
     def __init__(self, model_file):
@@ -33,23 +35,20 @@ class WeatherPredictor:
         X_new = self.extract_data_and_coords(grib_file)
         X_new = X_new.reshape(-1, 1)
         self.prediction = self.model.predict(X_new).reshape(361, 720)
-
-    def output_csv(self, filename='csv_out.csv'):
-        output_folder = './output/'
-        output_path = os.path.join(output_folder, filename)
-        os.makedirs(output_folder, exist_ok=True)
         
+    def output_csv(self):
         if self.prediction is None:
             print("No prediction made yet. Call the 'make_prediction' method first.")
+            return None
         else:
-            pd.DataFrame(self.prediction.flatten()).to_csv(output_path, index=False)
-
-        return open(output_path)
-            
-
+            output = io.StringIO()
+            pd.DataFrame(self.prediction.flatten()).to_csv(output, index=False)
+            return output.getvalue()
+    
     def plot_geopotential_height(self):
         if self.prediction is None:
             print("No prediction made yet. Call the 'make_prediction' method first.")
+            return None
         else:
             # Create a plot with a world map using Cartopy
             fig = plt.figure(figsize=(10, 6))
@@ -57,36 +56,35 @@ class WeatherPredictor:
             ax.coastlines()
             ax.stock_img()
             ax.gridlines(draw_labels=True)
-
+    
             # Compute plot min/max and set the contour value range
             vmin = self.prediction.min().item()
             vmax = self.prediction.max().item()
             levels = np.linspace(vmin, vmax, 100)
-
+    
             # Plot the geopotential height data
             plt.contourf(self.lons, self.lats, self.prediction, levels=levels, transform=ccrs.PlateCarree())
-
+    
             # Add colorbar
             cbar = plt.colorbar(shrink=0.642,  pad=0.1)
             cbar.set_label('Geopotential Height (meters)')
-
+    
             # Set plot title and labels
             plt.title(f"500hPa Geopotential Height Zero-Hour Forecast for {self.month}/{self.day}/{self.year} at {self.time}")
             plt.xlabel('Longitude')
             plt.ylabel('Latitude')
-
-            #plt.show()
+    
+            # Convert plot to PNG image
+            img_data = io.BytesIO()
+            plt.savefig(img_data, format='png')
+            img_data.seek(0)  # rewind the data
+    
+            plt.close(fig)  # Close the figure
+    
+            # Convert binary stream to PIL image
+            image = Image.open(img_data)
             
-            # Create output folder and set output path
-            output_folder = './output/'
-            output_filename = "zero_hour_plot.png"
-            output_path = os.path.join(output_folder, output_filename)
-            os.makedirs(output_folder, exist_ok=True)
-            
-            # Save and return plot
-            plt.savefig(output_path)
-            return open(output_path)
-
+            return image
 
 ## Example usage:
 
