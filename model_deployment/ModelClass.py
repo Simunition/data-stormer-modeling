@@ -41,9 +41,11 @@ class WeatherPredictor:
             print("No prediction made yet. Call the 'make_prediction' method first.")
             return None
         else:
-            output = io.StringIO()
-            pd.DataFrame(self.prediction.flatten()).to_csv(output, index=False)
-            return output.getvalue()
+            #output = io.StringIO()
+            #pd.DataFrame(self.prediction.flatten()).to_csv(output, index=False)
+            output_filename = "prediction_output.csv"
+            pd.DataFrame(self.prediction.flatten()).to_csv(output_filename, index=False)
+            return output_filename
     
     def plot_geopotential_height(self):
         if self.prediction is None:
@@ -79,12 +81,15 @@ class WeatherPredictor:
             plt.savefig(img_data, format='png')
             img_data.seek(0)  # rewind the data
     
-            plt.close(fig)  # Close the figure
+            #plt.close(fig)  # Close the figure
     
             # Convert binary stream to PIL image
-            image = Image.open(img_data)
+            # image = Image.open(img_data)
             
-            return image
+            img_filename = "prediction_output.png"
+            plt.savefig(img_filename)
+            plt.close(fig)  # Close the figure
+            return img_filename
 
 ## Example usage:
 
