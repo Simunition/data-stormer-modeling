@@ -2,3 +2,4 @@ libeccodes-dev
 libgeos-dev
 libproj-dev
 build-essential
+libeccodes0
