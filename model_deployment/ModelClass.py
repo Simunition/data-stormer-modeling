@@ -30,7 +30,12 @@ class WeatherPredictor:
             self.month = grb.validDate.month
             self.day = grb.validDate.day
             return data.flatten()
-        
+
+    def make_prediction(self, grib_file):
+        X_new = self.extract_data_and_coords(grib_file)
+        X_new = X_new.reshape(-1, 1)
+        self.prediction = self.model.predict(X_new).reshape(361, 720)
+    
     def output_csv(self):
         if self.prediction is None:
             print("No prediction made yet. Call the 'make_prediction' method first.")
@@ -51,7 +56,6 @@ class WeatherPredictor:
             df.to_csv(output_filename, index=False)
     
             return output_filename
-
     
     def plot_geopotential_height(self):
         if self.prediction is None:
