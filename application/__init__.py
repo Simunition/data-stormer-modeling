@@ -32,11 +32,12 @@ def predict():
     png_out = predictor.plot_geopotential_height() #plots the prediction
 
     # make a request to /submitCsvOut using requests.post
-    r = requests.post(APP_URL + '/submitCsvOut', files={'csvOut': open(csv_out, "rb").read()})
-    # ex: requests.post(url, files={'gribFile': open(f_location,'rb')})
+    with open(csv_out, "rb") as f:
+        r = requests.post(APP_URL + '/submitCsvOut', files={'csvOut': f})
 
     # make a request to /submitPngOut using requests.post
-    q = requests.post(APP_URL + '/submitPngOut', files={'pngOut': open(png_out, "rb").read()})
+    with open(png_out, "rb") as f:
+        q = requests.post(APP_URL + '/submitPngOut', files={'pngOut': f})
 
     # return a 200 response with make_response, and delete the send file response below
 
