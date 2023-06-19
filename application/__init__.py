@@ -16,7 +16,7 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
-APP_URL = "https://data-detectives.herokuapp.com/"
+APP_URL = "https://data-detectives.herokuapp.com"
 
 #create api
 @app.route('/api', methods=['GET', 'POST'])
