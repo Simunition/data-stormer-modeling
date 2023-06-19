@@ -1,5 +1,5 @@
 eccodes==1.5.2
-cartopy==0.20.1
+cartopy==0.21.1
 joblib==1.2.0
 matplotlib==3.7.1
 numpy==1.23.5
