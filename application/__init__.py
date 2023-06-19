@@ -9,9 +9,14 @@ from model_deployment.ModelClass import WeatherPredictor
 #create flask instance
 app = Flask(__name__)
 
-app.config["UPLOAD_FOLDER"] = "static/"
+UPLOAD_FOLDER = "static/"
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
-APP_URL = "http://127.0.0.1:5000"
+# Check if the upload folder exists, create it if necessary
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+APP_URL = "https://data-detectives.herokuapp.com/"
 
 #create api
 @app.route('/api', methods=['GET', 'POST'])
@@ -22,7 +27,7 @@ def predict():
     data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     #
     predictor = WeatherPredictor('../model_deployment/regr_model.joblib')
-    predictor.make_prediction(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    predictor.make_prediction(os.path.join(UPLOAD_FOLDER, filename))
     csv_out = predictor.output_csv() #outputs CSV with filename as input
     png_out = predictor.plot_geopotential_height() #plots the prediction
 
