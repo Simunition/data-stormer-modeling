@@ -8,7 +8,8 @@ from joblib import load
 
 class WeatherPredictor:
     def __init__(self, model_file):
-        self.model = load(model_file)
+        model_path = os.path.join(os.path.dirname(__file__), model_file)
+        self.model = load(model_path)
         self.prediction = None
         self.lats = None
         self.lons = None
